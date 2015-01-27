@@ -1,0 +1,67 @@
+Pig Philosophy
+* Pigs eat anything
+* Pigs live anywhere
+* Pigs are domestic animals
+* Pigs fly
+
+
+Names
+* Pig Latin for a language
+* Grunt for a shell
+* Piggybank for shared repository
+
+
+How to run pig
+* pig script.pig
+* pig -file script.pig
+* pig -check script.pig
+* pig -dryrun script.pig
+* pig -execute 'command'
+* pig -x local script.pig
+* pig -propertyFile file script.pig
+
+
+Data types:
+* Scalar: int, long, float, double, chararray, bytearray
+* Complex: map, tuple, bag
+
+
+Comments:
+-- This is a comment
+/*
+* This is a multiline comment.
+*/
+
+
+Input:
+* divs = LOAD 'NYSE_dividends';
+* divs = LOAD 'NYSE_dividends' USING PigStorage(',');
+* A = load 'a.json' using JsonLoader();
+* logs = LOAD 'user.log' USING LogLoader AS (remoteAddr, project, user, time, method, uri, proto, status, bytes, referer, userAgent);
+* students = LOAD 'student' USING PigStorage('\t') AS (name: chararray, age:int, gpa: float);
+* divs = load 'NYSE_dividends' as (exchange:chararray, symbol:chararray, date:chararray, dividends:float);
+
+Output:
+* STORE output INTO '/data/examples/processed';
+* DUMP output;
+
+
+Operations:
+* filtered_logs = foreach logs generate user, id;
+* gain = foreach prices generate close - open;
+* startswithcm = filter divs by symbol matches 'CM.*';
+* grpd = group daily by stock;
+* cnt = foreach grpd generate group, COUNT(daily);
+* grpd = group daily by (exchange, stock);
+* bydate = order daily by date;
+* uniq = distinct daily;
+* jnd = join daily by symbol, divs by symbol;
+* first10 = limit divs 10;
+* some = sample divs 0.1;
+* bysymbl = group daily by symbol parallel 10;
+* highdivs = stream divs through `highdiv.pl` as (exchange, symbol, date, dividends);
+* describe trimmed;
+* pig -x local -e 'explain -script explain.pig'
+* explain trimmed;
+* illustrate avgdiv;
+* SPLIT logs into good if bytes!='-' bad if bytes=='-';
