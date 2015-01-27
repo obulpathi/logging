@@ -1,0 +1,6 @@
+Pig produces a warning for the invalid field (not shown here) but does not halt its
+processing. For large datasets, it is very common to have corrupt, invalid, or merely
+unexpected data, and it is generally infeasible to incrementally fix every unparsable
+record. Instead, we can pull out all of the invalid records in one go, so we can take
+action on them, perhaps by fixing our program (because they indicate that we have
+made a mistake) or by filtering them out (because the data is genuinely unusable)
