@@ -6,17 +6,19 @@ DEFINE LogLoader org.apache.pig.piggybank.storage.apachelog.CombinedLogLoader();
 DEFINE DayExtractor org.apache.pig.piggybank.evaluation.util.apachelogparser.DateExtractor('yyyy-MM-dd');
 
 -- load the data
-logs = LOAD '/root/data/errors.log' USING LogLoader as (remoteAddr, remoteLogname, user, time, method, uri, proto, status, bytes, referer, userAgent);
-logs = LOAD '/root/data/user.log' USING LogLoader as (remoteAddr, remoteLogname, user, time, method, uri, proto, status, bytes, referer, userAgent);
+logs = LOAD '/root/data/raw.log' USING LogLoader as (remoteAddr, remoteLogname, user, time, method, uri, proto, status, bytes, referer, userAgent);
 
 -- filter the data
-filtered_logs = FILTER logs BY bytes != '-';
+SPLIT logs INTO good IF (bytes!='-' ), bad OTHERWISE;
 
--- Group records
-grouped_logs = GROUP filtered_logs BY user;
+-- select a sample from bad logs
+-- some = SAMPLE logs 0.01;
+-- records = GROUP some ALL;
+records = GROUP bad ALL;
 
--- Process logs
-sum_bytes = FOREACH grouped_logs GENERATE group, SUM(filtered_logs.bytes);
+-- count
+output = FOREACH records GENERATE COUNT(bad);
 
--- DUMP sum_bytes;
-STORE sum_bytes INTO '/root/output/sum_bytes';
+-- dump or store
+-- DUMP output
+STORE output INTO '/root/output/errors';

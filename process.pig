@@ -10,7 +10,7 @@ DEFINE LogLoader org.apache.pig.piggybank.storage.apachelog.CombinedLogLoader();
 DEFINE DayExtractor org.apache.pig.piggybank.evaluation.util.apachelogparser.DateExtractor('yyyy-MM-dd');
 
 -- load the data
-logs = LOAD '/root/data/user.log' USING LogLoader as (remoteAddr, project, user, time, method, uri, proto, status, bytes, referer, userAgent);
+logs = LOAD '/root/data/users.log' USING LogLoader as (remoteAddr, project, user, time, method, uri, proto, status, bytes, referer, userAgent);
 
 -- Describe logs
 DESCRIBE logs;

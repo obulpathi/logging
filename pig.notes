@@ -64,4 +64,5 @@ Operations:
 * pig -x local -e 'explain -script explain.pig'
 * explain trimmed;
 * illustrate avgdiv;
-* SPLIT logs into good if bytes!='-' bad if bytes=='-';
+* SPLIT logs into good if bytes!='-', bad if bytes=='-';
+* SPLIT logs INTO good IF (bytes!='-' ), bad OTHERWISE;
