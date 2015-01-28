@@ -17,8 +17,8 @@ SPLIT logs INTO good IF (bytes!='-' ), bad OTHERWISE;
 records = GROUP bad ALL;
 
 -- count
-output = FOREACH records GENERATE COUNT(bad);
+errors = FOREACH records GENERATE COUNT(bad);
 
 -- dump or store
 -- DUMP output
-STORE output INTO '/root/output/errors';
+STORE errors INTO '/root/output/errors';
